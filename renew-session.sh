@@ -6,7 +6,7 @@ role=$3
 while true
 do
 	new_credential=$(aws --profile $profile sts assume-role --role-arn arn:aws:iam::$account:role/$role --role-session-name renewed-$(date "+%Y-%m-%dT%H.%M.%S") --query "Credentials.{aws_access_key_id:AccessKeyId,aws_secret_access_key:SecretAccessKey,aws_session_token:SessionToken}" --output json | grep aws_ |sed 's/^ *"//; s/": "/ = /; s/",*$//')
-  sed -i.bak '/\[saml-hcs-sandbox-Admin\]/,+5d'  ~/.aws/credentials
+  sed -i.bak "/\[$profile\]/,+5d"  ~/.aws/credentials
   echo '[saml-hcs-sandbox-Admin]' >> ~/.aws/credentials
   echo 'output = json' >> ~/.aws/credentials
   echo 'region = us-east-1' >> ~/.aws/credentials
